@@ -1,0 +1,43 @@
+{
+  "name": "consoleDev",
+  "version": "0.0.1",
+  "description": "Simple console to show logs",
+  "tags": [
+    "logs",
+    "log",
+    "console"
+  ],
+  "keywords": [
+    "logs",
+    "log",
+    "console"
+  ],
+  "author": "Dhumez Sebastien",
+  "contributors" : [
+    { "name" : "Vadorequest"
+    }
+  ],
+  "main": "./src/consoleDev.js",
+  "scripts": {
+    "test": "mocha",
+    "coverage": "node ./node_modules/istanbul/lib/cli.js cover --preserve-comments ./node_modules/mocha/bin/_mocha -- -R spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Dhumez-Sebastien/consoleDev.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Dhumez-Sebastien/consoleDev/issues"
+  },
+  "license": "MIT",
+  "dependencies": {
+
+  },
+  "devDependencies": {
+    "assert": "^1.3.0",
+    "chai": "^2.3.0",
+    "codeclimate-test-reporter": "0.0.4",
+    "istanbul": "^0.3.14",
+    "mocha": "^2.2.4"
+  }
+}

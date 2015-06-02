@@ -1,0 +1,5 @@
+#Webstorm conf
+.idea
+
+node_modules
+.npmignore
