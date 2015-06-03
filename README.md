@@ -1,9 +1,9 @@
 # consoleDev
 
-[![Build Status](https://travis-ci.org/Dhumez-Sebastien/trap.js.svg?branch=master)](https://travis-ci.org/Dhumez-Sebastien/trap.js)
-[![Code Climate](https://codeclimate.com/github/Dhumez-Sebastien/trap.js/badges/gpa.svg)](https://codeclimate.com/github/Dhumez-Sebastien/trap.js)
-[![Test Coverage](https://codeclimate.com/github/Dhumez-Sebastien/trap.js/badges/coverage.svg)](https://codeclimate.com/github/Dhumez-Sebastien/trap.js/coverage)
-[![Dependency Status](https://david-dm.org/Dhumez-Sebastien/trap.js.svg)](https://david-dm.org/Dhumez-Sebastien/trap.js)
+[![Build Status](https://travis-ci.org/Dhumez-Sebastien/consoleDev.svg?branch=master)](https://travis-ci.org/Dhumez-Sebastien/consoleDev)
+[![Code Climate](https://codeclimate.com/github/Dhumez-Sebastien/consoleDev/badges/gpa.svg)](https://codeclimate.com/github/Dhumez-Sebastien/consoleDev)
+[![Test Coverage](https://codeclimate.com/github/Dhumez-Sebastien/consoleDev/badges/coverage.svg)](https://codeclimate.com/github/Dhumez-Sebastien/consoleDev/coverage)
+[![Dependency Status](https://david-dm.org/Dhumez-Sebastien/consoleDev.svg)](https://david-dm.org/Dhumez-Sebastien/consoleDev)
 
 #### More logs more simple!
 
