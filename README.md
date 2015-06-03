@@ -51,10 +51,20 @@ consoleDev.error('I\'m a error');
 
 ```
 
+## Customise
+
+```javascript
+consoleDev.setParams({
+            showPrefix : true,          // Show prefix before log (default to true)
+            fullColorize : true,        // Colorize full string into log
+            parenthesisObject : true    // Show parenthesis before/after object/array (default to true)
+        });
+```
+
 # Join in!
 
 I'm happy to receive bug reports, fixes, documentation enhancements, and any other improvements.
 
 # RoadMap
 
-* Soon
+* Customise color

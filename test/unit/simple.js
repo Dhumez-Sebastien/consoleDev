@@ -23,7 +23,72 @@ describe('Unit :: consoleDev', function () {
         consoleDev.warn('I\'m a warn');
         consoleDev.debug('I\'m a debug');
         consoleDev.error('I\'m a error');
-
+        consoleDev.error('I\'m an obj : ');
+        consoleDev.error({test : 0});
         consoleDev.error(new Error('May get an error'));
+
+        consoleDev.setParams({
+            showPrefix : false,
+            fullColorize : true
+        });
+
+        consoleDev.log('I\'m a log');
+        consoleDev.silly('I\'m a silly');
+        consoleDev.input('I\'m a input');
+        consoleDev.verbose('I\'m a verbose');
+        consoleDev.prompt('I\'m a prompt');
+        consoleDev.info('I\'m a info');
+        consoleDev.data('I\'m a data');
+        consoleDev.help('I\'m a help');
+        consoleDev.warn('I\'m a warn');
+        consoleDev.debug('I\'m a debug');
+        consoleDev.error('I\'m a error');
+        consoleDev.error('I\'m an obj : ');
+        consoleDev.error({test : 0});
+        consoleDev.error(new Error('May get an error'));
+
+        consoleDev.setParams({
+            showPrefix : true,
+            fullColorize : false
+        });
+
+        consoleDev.log('I\'m a log');
+        consoleDev.silly('I\'m a silly');
+        consoleDev.input('I\'m a input');
+        consoleDev.verbose('I\'m a verbose');
+        consoleDev.prompt('I\'m a prompt');
+        consoleDev.info('I\'m a info');
+        consoleDev.data('I\'m a data');
+        consoleDev.help('I\'m a help');
+        consoleDev.warn('I\'m a warn');
+        consoleDev.debug('I\'m a debug');
+        consoleDev.error('I\'m a error');
+        consoleDev.error('I\'m an obj : ');
+        consoleDev.error({test : 0});
+        consoleDev.error(new Error('May get an error'));
+
+        consoleDev.setParams({
+            showPrefix : true,
+            fullColorize : true,
+            parenthesisObject : false
+        });
+
+
+        consoleDev.log('I\'m a log');
+        consoleDev.silly('I\'m a silly');
+        consoleDev.input('I\'m a input');
+        consoleDev.verbose('I\'m a verbose');
+        consoleDev.prompt('I\'m a prompt');
+        consoleDev.info('I\'m a info');
+        consoleDev.data('I\'m a data');
+        consoleDev.help('I\'m a help');
+        consoleDev.warn('I\'m a warn');
+        consoleDev.debug('I\'m a debug');
+        consoleDev.error('I\'m a error');
+        consoleDev.error('I\'m an obj : ');
+        consoleDev.error({test : 0});
+        consoleDev.error(new Error('May get an error'));
+
+
     });
 });

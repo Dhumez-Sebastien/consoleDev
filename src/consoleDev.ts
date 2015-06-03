@@ -2,7 +2,6 @@
 import colors = require('colors');
 import _ = require('lodash');
 
-declare var sails : any;
 declare var console : any;
 
 // Debug types available
@@ -38,6 +37,23 @@ var levelsRestrict = {
  */
 class ConsoleDev {
 
+    /**
+     * Full colorization for string
+     *
+     * @property _fullColorize
+     * @type {boolean}
+     * @private
+     */
+    private _fullColorize : boolean = true;
+
+    /**
+     * List of logger who lmust be erased
+     *      e.g : sails.log
+     *
+     * @property _logFnErase
+     * @type {Function}
+     * @private
+     */
     private _logFnErase : Function[] = [];
 
     /**
@@ -49,6 +65,28 @@ class ConsoleDev {
      * @private
      */
     private _logLevel : string;
+
+    /**
+     * To set is object/Array or other must be in parenthesis
+     *      e.g     ______________________
+     *      e.g     { test : 0 }
+     *      e.g     ______________________
+     *
+     * @property _parenthesisObject
+     * @type {boolean}
+     * @private
+     */
+    private _parenthesisObject : boolean = true;
+
+    /**
+     * Show prefix before log
+     *      e.g : error : i'm an error
+     *
+     * @property _showPrefix
+     * @type {boolean}
+     * @private
+     */
+    private _showPrefix : boolean = true;
 
     /**
      * Basic constructor
@@ -86,16 +124,9 @@ class ConsoleDev {
         // Bind all logs types
         for (var i : number = 0, ls : number = types.length; i < ls; i++) {
 
-            /*if (types[i] === 'log') {
-                this[types[i]] = function(str) {
-                    console.log(colors.log(str));
-                };
-                continue;
-            }*/
-
             if (_.indexOf(levelsRestrict[this._logLevel], types[i]) !== -1) {
                 // Bind logs type
-                this[types[i]] = this.__showLog((colors[types[i]]) ? colors[types[i]] : colors.white);
+                this[types[i]] = this.__showLog((colors[types[i]]) ? colors[types[i]] : colors.white, types[i]);
 
                 for (var j : number = 0, lx : number = this._logFnErase.length; j < lx; j++) {
                     // Cannot erase console.log
@@ -115,17 +146,6 @@ class ConsoleDev {
                 } else if (!this[types[i]] && !console[types[i]]) {
                     this[types[i]] = console.log;
                 }
-
-                // Erase all console by this one
-                /*if (typeof sails !== 'undefined' && sails.log[types[i]] && this[types[i]]) {
-                 sails.log[types[i]] = this[types[i]];
-                 }*/ /*else if (console[types[i]] && this[types[i]]) {
-                 console[types[i]] = this[types[i]];
-                 } else if (!console[types[i]] && this[types[i]]) {
-                 console[types[i]] = this[types[i]];
-                 }*/  /*else {
-                 this[types[i]] = console.log;
-                 }*/
             } else {
                 // Just an empty function
                 this[types[i]] = function() {};
@@ -139,12 +159,47 @@ class ConsoleDev {
      * @private
      *
      * @param {object} color        The current color used by log
+     * @param {string} type         Type of log
      */
-    private __showLog(color : any) : Function {
+    private __showLog(color : any, type : string) : Function {
+        // Scope
+        var self : ConsoleDev = this;
+
+        // Colorize string
+        var colorizeStr : Function = (this._fullColorize) ? color : function(str) {
+            return str;
+        };
+
+        // Show prefix before log
+        var showPrefix : string = (this._showPrefix) ? color(type+' : ') : '';
+
+        // Select console type
+        var consoleType : string = (console[type]) ? type : 'log';
+
+        // Show or hide parenthesis for objects
+        var parenthesis : Function = (this._parenthesisObject) ?
+            function() {
+                console[consoleType](color('______________________________________')
+                )
+            } : function() {};
+
+        // Back function
         return function(str) {
-            console.log(color(str));
+            if (typeof str !== 'string') {
+                parenthesis();
+
+                if (self._showPrefix) {
+                    console[consoleType](showPrefix);
+                }
+
+                console[consoleType](str);
+                parenthesis();
+            } else {
+                console[consoleType](showPrefix + colorizeStr(str));
+            }
         };
     }
+
 
     /**
      * Get the current log level
@@ -193,6 +248,24 @@ class ConsoleDev {
                 this._logFnErase.push(list[j]);
             }
         }
+
+        // Reload logs
+        this.__loadLogs();
+
+        return this;
+    }
+
+    /**
+     * Apply some custom parameters
+     * @method setParams
+     *
+     * @param {object} opts         List of parameters
+     * @return {ConsoleDev}         return ConsoleDev
+     */
+    public setParams(opts : any) : ConsoleDev {
+        this._fullColorize = (!_.isUndefined(opts.fullColorize)) ? !!opts.fullColorize : this._fullColorize;
+        this._parenthesisObject = (!_.isUndefined(opts.parenthesisObject)) ? !!opts.parenthesisObject : this._parenthesisObject;
+        this._showPrefix = (!_.isUndefined(opts.showPrefix)) ? !!opts.showPrefix : this._showPrefix;
 
         // Reload logs
         this.__loadLogs();

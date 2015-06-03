@@ -34,7 +34,43 @@ var ConsoleDev = (function () {
      * Basic constructor
      */
     function ConsoleDev() {
+        /**
+         * Full colorization for string
+         *
+         * @property _fullColorize
+         * @type {boolean}
+         * @private
+         */
+        this._fullColorize = true;
+        /**
+         * List of logger who lmust be erased
+         *      e.g : sails.log
+         *
+         * @property _logFnErase
+         * @type {Function}
+         * @private
+         */
         this._logFnErase = [];
+        /**
+         * To set is object/Array or other must be in parenthesis
+         *      e.g     ______________________
+         *      e.g     { test : 0 }
+         *      e.g     ______________________
+         *
+         * @property _parenthesisObject
+         * @type {boolean}
+         * @private
+         */
+        this._parenthesisObject = true;
+        /**
+         * Show prefix before log
+         *      e.g : error : i'm an error
+         *
+         * @property _showPrefix
+         * @type {boolean}
+         * @private
+         */
+        this._showPrefix = true;
         // Apply default theme
         colors.setTheme({
             log: 'white',
@@ -62,15 +98,9 @@ var ConsoleDev = (function () {
     ConsoleDev.prototype.__loadLogs = function () {
         // Bind all logs types
         for (var i = 0, ls = types.length; i < ls; i++) {
-            /*if (types[i] === 'log') {
-                this[types[i]] = function(str) {
-                    console.log(colors.log(str));
-                };
-                continue;
-            }*/
             if (_.indexOf(levelsRestrict[this._logLevel], types[i]) !== -1) {
                 // Bind logs type
-                this[types[i]] = this.__showLog((colors[types[i]]) ? colors[types[i]] : colors.white);
+                this[types[i]] = this.__showLog((colors[types[i]]) ? colors[types[i]] : colors.white, types[i]);
                 for (var j = 0, lx = this._logFnErase.length; j < lx; j++) {
                     // Cannot erase console.log
                     if (types[i] === 'log' && this._logFnErase[j] === console) {
@@ -101,10 +131,37 @@ var ConsoleDev = (function () {
      * @private
      *
      * @param {object} color        The current color used by log
+     * @param {string} type         Type of log
      */
-    ConsoleDev.prototype.__showLog = function (color) {
+    ConsoleDev.prototype.__showLog = function (color, type) {
+        // Scope
+        var self = this;
+        // Colorize string
+        var colorizeStr = (this._fullColorize) ? color : function (str) {
+            return str;
+        };
+        // Show prefix before log
+        var showPrefix = (this._showPrefix) ? color(type + ' : ') : '';
+        // Select console type
+        var consoleType = (console[type]) ? type : 'log';
+        // Show or hide parenthesis for objects
+        var parenthesis = (this._parenthesisObject) ?
+            function () {
+                console[consoleType](color('______________________________________'));
+            } : function () { };
+        // Back function
         return function (str) {
-            console.log(color(str));
+            if (typeof str !== 'string') {
+                parenthesis();
+                if (self._showPrefix) {
+                    console[consoleType](showPrefix);
+                }
+                console[consoleType](str);
+                parenthesis();
+            }
+            else {
+                console[consoleType](showPrefix + colorizeStr(str));
+            }
         };
     };
     /**
@@ -151,6 +208,21 @@ var ConsoleDev = (function () {
                 this._logFnErase.push(list[j]);
             }
         }
+        // Reload logs
+        this.__loadLogs();
+        return this;
+    };
+    /**
+     * Apply some custom parameters
+     * @method setParams
+     *
+     * @param {object} opts         List of parameters
+     * @return {ConsoleDev}         return ConsoleDev
+     */
+    ConsoleDev.prototype.setParams = function (opts) {
+        this._fullColorize = (!_.isUndefined(opts.fullColorize)) ? !!opts.fullColorize : this._fullColorize;
+        this._parenthesisObject = (!_.isUndefined(opts.parenthesisObject)) ? !!opts.parenthesisObject : this._parenthesisObject;
+        this._showPrefix = (!_.isUndefined(opts.showPrefix)) ? !!opts.showPrefix : this._showPrefix;
         // Reload logs
         this.__loadLogs();
         return this;
