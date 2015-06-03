@@ -13,13 +13,14 @@
     "console"
   ],
   "author": "Dhumez Sebastien",
-  "contributors" : [
-    { "name" : "Vadorequest"
+  "contributors": [
+    {
+      "name": "Vadorequest"
     }
   ],
   "main": "./src/consoleDev.js",
   "scripts": {
-    "test": "mocha",
+    "test": "mocha test/test.js test/unit/**/*.js test/functional/**/*.js",
     "coverage": "node ./node_modules/istanbul/lib/cli.js cover --preserve-comments ./node_modules/mocha/bin/_mocha -- -R spec"
   },
   "repository": {
@@ -31,7 +32,8 @@
   },
   "license": "MIT",
   "dependencies": {
-
+    "colors": "^1.1.0",
+    "lodash": "^3.9.3"
   },
   "devDependencies": {
     "assert": "^1.3.0",
