@@ -31,11 +31,6 @@ var levelsRestrict = {
 };
 
 /**
- * Je pense que pour l'utilisation d'une console de type dev, ecrasé la console n'est pas une bonne idée. Si cette
- * console est utilisée lors de la création de projet, on ne doit pas écraser la console mais utiliser uniquement consoleDev.
- */
-
-/**
  * ConsoleDev
  *
  * @module :: ConsoleDev
@@ -98,13 +93,13 @@ class ConsoleDev {
                 continue;
             }*/
 
-            if (_.indexOf(levelsRestrict[this._logLevel], types[i]) != -1) {
+            if (_.indexOf(levelsRestrict[this._logLevel], types[i]) !== -1) {
                 // Bind logs type
                 this[types[i]] = this.__showLog((colors[types[i]]) ? colors[types[i]] : colors.white);
 
                 for (var j : number = 0, lx : number = this._logFnErase.length; j < lx; j++) {
                     // Cannot erase console.log
-                    if (types[i] == 'log' && this._logFnErase[j] === console) {
+                    if (types[i] === 'log' && this._logFnErase[j] === console) {
                         continue;
                     }
 
@@ -169,7 +164,7 @@ class ConsoleDev {
      * @return {ConsoleDev}         return ConsoleDev
      */
     public setLogLevel(level : string) : ConsoleDev {
-        if (_.indexOf(levels, level) == -1) {
+        if (_.indexOf(levels, level) === -1) {
             throw('Unknow level type');
         } else {
             this._logLevel = level;
@@ -193,9 +188,9 @@ class ConsoleDev {
         }
 
         // Add elements
-        for (var i : number = 0, ls : number = list.length; i < ls; i++) {
-            if (!_.isUndefined(list[i])) {
-                this._logFnErase.push(list[i]);
+        for (var j : number = 0, lx : number = list.length; j < lx; j++) {
+            if (!_.isUndefined(list[j])) {
+                this._logFnErase.push(list[j]);
             }
         }
 

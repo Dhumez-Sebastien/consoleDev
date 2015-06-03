@@ -24,10 +24,6 @@ var levelsRestrict = {
     silly: ['silly', 'verbose', 'info', 'debug', 'warn', 'error', 'log']
 };
 /**
- * Je pense que pour l'utilisation d'une console de type dev, ecras� la console n'est pas une bonne id�e. Si cette
- * console est utilis�e lors de la cr�ation de projet, on ne doit pas �craser la console mais utiliser uniquement consoleDev.
- */
-/**
  * ConsoleDev
  *
  * @module :: ConsoleDev
@@ -72,12 +68,12 @@ var ConsoleDev = (function () {
                 };
                 continue;
             }*/
-            if (_.indexOf(levelsRestrict[this._logLevel], types[i]) != -1) {
+            if (_.indexOf(levelsRestrict[this._logLevel], types[i]) !== -1) {
                 // Bind logs type
                 this[types[i]] = this.__showLog((colors[types[i]]) ? colors[types[i]] : colors.white);
                 for (var j = 0, lx = this._logFnErase.length; j < lx; j++) {
                     // Cannot erase console.log
-                    if (types[i] == 'log' && this._logFnErase[j] === console) {
+                    if (types[i] === 'log' && this._logFnErase[j] === console) {
                         continue;
                     }
                     // Erase all others
@@ -128,7 +124,7 @@ var ConsoleDev = (function () {
      * @return {ConsoleDev}         return ConsoleDev
      */
     ConsoleDev.prototype.setLogLevel = function (level) {
-        if (_.indexOf(levels, level) == -1) {
+        if (_.indexOf(levels, level) === -1) {
             throw ('Unknow level type');
         }
         else {
@@ -150,9 +146,9 @@ var ConsoleDev = (function () {
             this._logFnErase.pop();
         }
         // Add elements
-        for (var i = 0, ls = list.length; i < ls; i++) {
-            if (!_.isUndefined(list[i])) {
-                this._logFnErase.push(list[i]);
+        for (var j = 0, lx = list.length; j < lx; j++) {
+            if (!_.isUndefined(list[j])) {
+                this._logFnErase.push(list[j]);
             }
         }
         // Reload logs
