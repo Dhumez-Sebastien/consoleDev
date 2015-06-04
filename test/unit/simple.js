@@ -70,9 +70,8 @@ describe('Unit :: consoleDev', function () {
         consoleDev.setParams({
             showPrefix : true,
             fullColorize : true,
-            parenthesisObject : false
+            parenthesisObject : true
         });
-
 
         consoleDev.log('I\'m a log');
         consoleDev.silly('I\'m a silly');
@@ -86,6 +85,16 @@ describe('Unit :: consoleDev', function () {
         consoleDev.debug('I\'m a debug');
         consoleDev.error('I\'m a error');
         consoleDev.error('I\'m an obj : ');
+        consoleDev.error({test : 0});
+        consoleDev.error(new Error('May get an error'));
+
+
+        consoleDev.setParams({
+            showPrefix : true,
+            fullColorize : true,
+            parenthesisObject : false
+        });
+
         consoleDev.error({test : 0});
         consoleDev.error(new Error('May get an error'));
 

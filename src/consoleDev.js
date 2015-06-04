@@ -91,6 +91,16 @@ var ConsoleDev = (function () {
         this.__loadLogs();
     }
     /**
+     * Return string for colorization
+     * @method __colorizeChar
+     * @private
+     *
+     * @param {object} str          Get back this string for colorization
+     */
+    ConsoleDev.prototype.__colorizeChar = function (str) {
+        return str;
+    };
+    /**
      * Binding logs
      * @method __loadLogs
      * @private
@@ -102,21 +112,14 @@ var ConsoleDev = (function () {
                 // Bind logs type
                 this[types[i]] = this.__showLog((colors[types[i]]) ? colors[types[i]] : colors.white, types[i]);
                 for (var j = 0, lx = this._logFnErase.length; j < lx; j++) {
-                    // Cannot erase console.log
-                    if (types[i] === 'log' && this._logFnErase[j] === console) {
+                    // Cannot erase console
+                    if (this._logFnErase[j] instanceof console.Console) {
                         continue;
                     }
                     // Erase all others
                     if (this._logFnErase[j][types[i]]) {
                         this._logFnErase[j][types[i]] = this[types[i]];
                     }
-                }
-                // If type
-                if (!this[types[i]] && console[types[i]]) {
-                    this[types[i]] = console[types[i]];
-                }
-                else if (!this[types[i]] && !console[types[i]]) {
-                    this[types[i]] = console.log;
                 }
             }
             else {
@@ -137,9 +140,7 @@ var ConsoleDev = (function () {
         // Scope
         var self = this;
         // Colorize string
-        var colorizeStr = (this._fullColorize) ? color : function (str) {
-            return str;
-        };
+        var colorizeStr = (this._fullColorize) ? color : this.__colorizeChar;
         // Show prefix before log
         var showPrefix = (this._showPrefix) ? color(type + ' : ') : '';
         // Select console type
@@ -175,23 +176,6 @@ var ConsoleDev = (function () {
     };
     /**
      * Apply another log level
-     * @method setLogLevel
-     *
-     * @param {string} level        The new log level who must be used
-     * @return {ConsoleDev}         return ConsoleDev
-     */
-    ConsoleDev.prototype.setLogLevel = function (level) {
-        if (_.indexOf(levels, level) === -1) {
-            throw ('Unknow level type');
-        }
-        else {
-            this._logLevel = level;
-            this.__loadLogs();
-        }
-        return this;
-    };
-    /**
-     * Apply another log level
      * @method setEraseLogList
      *
      * @param {any[]} list          List of logger who must be erased
@@ -213,6 +197,23 @@ var ConsoleDev = (function () {
         return this;
     };
     /**
+     * Apply another log level
+     * @method setLogLevel
+     *
+     * @param {string} level        The new log level who must be used
+     * @return {ConsoleDev}         return ConsoleDev
+     */
+    ConsoleDev.prototype.setLogLevel = function (level) {
+        if (_.indexOf(levels, level) === -1) {
+            this['error']('Unknown level type : ' + level);
+        }
+        else {
+            this._logLevel = level;
+            this.__loadLogs();
+        }
+        return this;
+    };
+    /**
      * Apply some custom parameters
      * @method setParams
      *
@@ -220,9 +221,15 @@ var ConsoleDev = (function () {
      * @return {ConsoleDev}         return ConsoleDev
      */
     ConsoleDev.prototype.setParams = function (opts) {
-        this._fullColorize = (!_.isUndefined(opts.fullColorize)) ? !!opts.fullColorize : this._fullColorize;
-        this._parenthesisObject = (!_.isUndefined(opts.parenthesisObject)) ? !!opts.parenthesisObject : this._parenthesisObject;
-        this._showPrefix = (!_.isUndefined(opts.showPrefix)) ? !!opts.showPrefix : this._showPrefix;
+        if (!_.isUndefined(opts.fullColorize)) {
+            this._fullColorize = !!opts.fullColorize;
+        }
+        if (!_.isUndefined(opts.parenthesisObject)) {
+            this._parenthesisObject = !!opts.parenthesisObject;
+        }
+        if (!_.isUndefined(opts.showPrefix)) {
+            this._showPrefix = !!opts.showPrefix;
+        }
         // Reload logs
         this.__loadLogs();
         return this;
