@@ -193,19 +193,22 @@ class ConsoleDev {
             } : function() {};
 
         // Back function
-        return function(str) {
-            if (typeof str !== 'string') {
-                parenthesis();
+        return function() {
+            for (var i : number = 0, ls : number = arguments.length; i < ls; i++) {
+                if (typeof arguments[i] !== 'string') {
+                    parenthesis();
 
-                if (self._showPrefix) {
-                    console[consoleType](showPrefix);
+                    if (self._showPrefix) {
+                        console[consoleType](showPrefix);
+                    }
+
+                    console[consoleType](arguments[i]);
+                    parenthesis();
+                } else {
+                    console[consoleType](showPrefix + colorizeStr(arguments[i]));
                 }
-
-                console[consoleType](str);
-                parenthesis();
-            } else {
-                console[consoleType](showPrefix + colorizeStr(str));
             }
+
         };
     }
 

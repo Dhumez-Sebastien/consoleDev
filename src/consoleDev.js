@@ -151,17 +151,19 @@ var ConsoleDev = (function () {
                 console[consoleType](color('______________________________________'));
             } : function () { };
         // Back function
-        return function (str) {
-            if (typeof str !== 'string') {
-                parenthesis();
-                if (self._showPrefix) {
-                    console[consoleType](showPrefix);
+        return function () {
+            for (var i = 0, ls = arguments.length; i < ls; i++) {
+                if (typeof arguments[i] !== 'string') {
+                    parenthesis();
+                    if (self._showPrefix) {
+                        console[consoleType](showPrefix);
+                    }
+                    console[consoleType](arguments[i]);
+                    parenthesis();
                 }
-                console[consoleType](str);
-                parenthesis();
-            }
-            else {
-                console[consoleType](showPrefix + colorizeStr(str));
+                else {
+                    console[consoleType](showPrefix + colorizeStr(arguments[i]));
+                }
             }
         };
     };

@@ -98,6 +98,9 @@ describe('Unit :: consoleDev', function () {
         consoleDev.error({test : 0});
         consoleDev.error(new Error('May get an error'));
 
+        consoleDev.debug('I\'m a debug', {test : 0});
+
+
 
     });
 });
