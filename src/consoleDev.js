@@ -1,6 +1,6 @@
-///<reference path="./defLoader.d.ts" />
-var colors = require('colors');
-var _ = require('lodash');
+"use strict";
+var colors = require("colors");
+var _ = require("lodash");
 // Debug types available
 var types = ['log', 'silly', 'input', 'verbose', 'prompt', 'info', 'data', 'help', 'warn', 'debug', 'error'];
 var levels = ['silent', 'error', 'warn', 'debug', 'info', 'verbose', 'silly'];
@@ -121,6 +121,12 @@ var ConsoleDev = (function () {
                         this._logFnErase[j][types[i]] = this[types[i]];
                     }
                 }
+                // If type
+                /*if (!this[types[i]] && console[types[i]]) {
+                    this[types[i]] = console[types[i]];
+                } else if (!this[types[i]] && !console[types[i]]) {
+                    this[types[i]] = console.log;
+                }*/
             }
             else {
                 // Just an empty function
@@ -223,20 +229,19 @@ var ConsoleDev = (function () {
      * @return {ConsoleDev}         return ConsoleDev
      */
     ConsoleDev.prototype.setParams = function (opts) {
-        if (!_.isUndefined(opts.fullColorize)) {
-            this._fullColorize = !!opts.fullColorize;
+        if (!_.isUndefined(opts.fullColorize) && _.isBoolean(opts.fullColorize)) {
+            this._fullColorize = opts.fullColorize;
         }
-        if (!_.isUndefined(opts.parenthesisObject)) {
-            this._parenthesisObject = !!opts.parenthesisObject;
+        if (!_.isUndefined(opts.parenthesisObject) && _.isBoolean(opts.parenthesisObject)) {
+            this._parenthesisObject = opts.parenthesisObject;
         }
-        if (!_.isUndefined(opts.showPrefix)) {
-            this._showPrefix = !!opts.showPrefix;
+        if (!_.isUndefined(opts.showPrefix) && _.isBoolean(opts.showPrefix)) {
+            this._showPrefix = opts.showPrefix;
         }
         // Reload logs
         this.__loadLogs();
         return this;
     };
     return ConsoleDev;
-})();
+}());
 module.exports = new ConsoleDev();
-//# sourceMappingURL=consoleDev.js.map

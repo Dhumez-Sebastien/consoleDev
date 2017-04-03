@@ -23,7 +23,7 @@ describe('Unit :: consoleDev', function () {
         consoleDev.warn('I\'m a warn');
         consoleDev.debug('I\'m a debug');
         consoleDev.error('I\'m a error');
-        consoleDev.error('I\'m an obj : ');
+        consoleDev.error('I\'m an error obj : ');
         consoleDev.error({test : 0});
         consoleDev.error(new Error('May get an error'));
 
@@ -99,8 +99,5 @@ describe('Unit :: consoleDev', function () {
         consoleDev.error(new Error('May get an error'));
 
         consoleDev.debug('I\'m a debug', {test : 0});
-
-
-
     });
 });

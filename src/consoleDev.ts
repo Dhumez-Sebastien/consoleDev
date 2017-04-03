@@ -1,12 +1,11 @@
-///<reference path="./defLoader.d.ts" />
 import colors = require('colors');
 import _ = require('lodash');
 
-declare var console : any;
+declare const console : any;
 
 // Debug types available
-var types = ['log', 'silly', 'input', 'verbose', 'prompt', 'info', 'data', 'help', 'warn', 'debug', 'error'];
-var levels = ['silent', 'error', 'warn', 'debug', 'info', 'verbose', 'silly'];
+const types = ['log', 'silly', 'input', 'verbose', 'prompt', 'info', 'data', 'help', 'warn', 'debug', 'error'];
+const levels = ['silent', 'error', 'warn', 'debug', 'info', 'verbose', 'silly'];
 
 /**
  * Priority	level	Log fns visible
@@ -19,7 +18,7 @@ var levels = ['silent', 'error', 'warn', 'debug', 'info', 'verbose', 'silly'];
  6	silly	.silly(), .verbose(), .info(), .debug(), .warn(), .error()
  */
 
-var levelsRestrict = {
+const levelsRestrict = {
     silent : [],
     error : ['error'],
     warn : ['warn', 'error'],
@@ -28,6 +27,13 @@ var levelsRestrict = {
     verbose : ['verbose', 'info', 'debug', 'warn', 'error', 'log'],
     silly : ['silly', 'verbose', 'info', 'debug', 'warn', 'error', 'log'],
 };
+
+
+interface optionParameters {
+    parenthesisObject ?: boolean;
+    fullColorize ?: boolean;
+    showPrefix ?: boolean;
+}
 
 /**
  * ConsoleDev
@@ -133,13 +139,13 @@ class ConsoleDev {
     private __loadLogs() : void {
 
         // Bind all logs types
-        for (var i : number = 0, ls : number = types.length; i < ls; i++) {
+        for (let i : number = 0, ls : number = types.length; i < ls; i++) {
 
             if (_.indexOf(levelsRestrict[this._logLevel], types[i]) !== -1) {
                 // Bind logs type
                 this[types[i]] = this.__showLog((colors[types[i]]) ? colors[types[i]] : colors.white, types[i]);
 
-                for (var j : number = 0, lx : number = this._logFnErase.length; j < lx; j++) {
+                for (let j : number = 0, lx : number = this._logFnErase.length; j < lx; j++) {
                     // Cannot erase console
                     if (this._logFnErase[j] instanceof console.Console) {
                         continue;
@@ -174,19 +180,19 @@ class ConsoleDev {
      */
     private __showLog(color : any, type : string) : Function {
         // Scope
-        var self : ConsoleDev = this;
+        const self : ConsoleDev = this;
 
         // Colorize string
-        var colorizeStr : Function = (this._fullColorize) ? color : this.__colorizeChar;
+        const colorizeStr : Function = (this._fullColorize) ? color : this.__colorizeChar;
 
         // Show prefix before log
-        var showPrefix : string = (this._showPrefix) ? color(type+' : ') : '';
+        const showPrefix : string = (this._showPrefix) ? color(type+' : ') : '';
 
         // Select console type
-        var consoleType : string = (console[type]) ? type : 'log';
+        const consoleType : string = (console[type]) ? type : 'log';
 
         // Show or hide parenthesis for objects
-        var parenthesis : Function = (this._parenthesisObject) ?
+        const parenthesis : Function = (this._parenthesisObject) ?
             function() {
                 console[consoleType](color('______________________________________')
                 )
@@ -194,7 +200,7 @@ class ConsoleDev {
 
         // Back function
         return function() {
-            for (var i : number = 0, ls : number = arguments.length; i < ls; i++) {
+            for (let i : number = 0, ls : number = arguments.length; i < ls; i++) {
                 if (typeof arguments[i] !== 'string') {
                     parenthesis();
 
@@ -208,7 +214,6 @@ class ConsoleDev {
                     console[consoleType](showPrefix + colorizeStr(arguments[i]));
                 }
             }
-
         };
     }
 
@@ -231,12 +236,12 @@ class ConsoleDev {
      */
     public setEraseLogList(list : any[]) : ConsoleDev {
         // Clear array
-        for (var i : number = 0, ls : number = this._logFnErase.length; i < ls; i++) {
+        for (let i : number = 0, ls : number = this._logFnErase.length; i < ls; i++) {
             this._logFnErase.pop();
         }
 
         // Add elements
-        for (var j : number = 0, lx : number = list.length; j < lx; j++) {
+        for (let j : number = 0, lx : number = list.length; j < lx; j++) {
             if (!_.isUndefined(list[j])) {
                 this._logFnErase.push(list[j]);
             }
@@ -273,17 +278,17 @@ class ConsoleDev {
      * @param {object} opts         List of parameters
      * @return {ConsoleDev}         return ConsoleDev
      */
-    public setParams(opts : any) : ConsoleDev {
-        if (!_.isUndefined(opts.fullColorize)) {
-            this._fullColorize = !!opts.fullColorize;
+    public setParams(opts : optionParameters) : ConsoleDev {
+        if (!_.isUndefined(opts.fullColorize) && _.isBoolean(opts.fullColorize)) {
+            this._fullColorize = opts.fullColorize;
         }
 
-        if (!_.isUndefined(opts.parenthesisObject)) {
-            this._parenthesisObject = !!opts.parenthesisObject;
+        if (!_.isUndefined(opts.parenthesisObject) && _.isBoolean(opts.parenthesisObject)) {
+            this._parenthesisObject = opts.parenthesisObject;
         }
 
-        if (!_.isUndefined(opts.showPrefix)) {
-            this._showPrefix = !!opts.showPrefix;
+        if (!_.isUndefined(opts.showPrefix) && _.isBoolean(opts.showPrefix)) {
+            this._showPrefix = opts.showPrefix;
         }
 
         // Reload logs
@@ -292,5 +297,6 @@ class ConsoleDev {
         return this;
     }
 }
+
 
 export = new ConsoleDev();
