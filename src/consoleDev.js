@@ -119,5 +119,6 @@ class ConsoleDev {
         return this;
     }
 }
-module.exports = new ConsoleDev();
+let NewConsoleDev = new ConsoleDev();
+module.exports = NewConsoleDev;
 //# sourceMappingURL=consoleDev.js.map

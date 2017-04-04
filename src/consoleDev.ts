@@ -313,5 +313,6 @@ class ConsoleDev {
     }
 }
 
-
-export = new ConsoleDev();
+// Export like that resolve error on require module in TS
+let NewConsoleDev = new ConsoleDev();
+export = NewConsoleDev;
