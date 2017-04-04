@@ -44,6 +44,21 @@ interface optionParameters {
 class ConsoleDev {
 
     /**
+     * Declare log list for TypeScript use
+     */
+    public log : Function;
+    public silly : Function;
+    public input : Function;
+    public verbose : Function;
+    public prompt : Function;
+    public info : Function;
+    public data : Function;
+    public help : Function;
+    public warn : Function;
+    public debug : Function;
+    public error : Function;
+
+    /**
      * Full colorization for string
      *
      * @property _fullColorize
